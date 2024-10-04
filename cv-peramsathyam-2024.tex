@@ -1,0 +1,77 @@
+\documentclass[13.12pt,a4paper,sans,colorlinks,hyperindex,plainpages=false,bookmarksopen,bookmarksnumbered,pdfusetitle]{moderncv}
+
+% ModernCV themes
+\moderncvstyle{casual} % Style options: 'casual', 'classic', 'banking', 'oldstyle', 'fancy'
+\moderncvcolor{grey} % Color options: 'blue', 'orange', 'green', 'red', 'purple', 'grey', 'black'
+
+% Adjust the page margins
+% \usepackage{uni8}
+% \usepackage{uni8}
+% \usepackage{hwemoji}
+\usepackage{twemojis}
+
+
+% https://github.com/latex3/hyperref/blob/main/doc/hyperref-doc.tex#L141
+% \ifpdf
+%   \usepackage[%
+% %    pdftex,% might be luatex, just allow automatic default
+%     colorlinks,%
+%     hyperindex,%
+%     plainpages=false,%
+%     bookmarksopen,%
+%     bookmarksnumbered,
+%     pdfusetitle,%
+%   ]{hyperref}
+%   %%?? \def\pdfBorderAttrs{/Border [0 0 0] } % No border arround Links
+% \else
+%   \usepackage{hyperref}
+% \fi
+
+\usepackage[scale=0.87]{geometry}
+
+% Personal data
+\title{Curriculum Vitae}
+\name{Peramanathan}{Sathyamoorthy}
+\address{Stockholm, Sweden}
+\phone[mobile]{+46~737~641~917}
+\email{sathyam.peram@gmail.com}
+
+\setlength{\footskip}{50pt}
+\setlength{\hintscolumnwidth}{3.5cm}
+
+\begin{document}
+
+\name{Peramanathan}{Sathyamoorthy}
+
+\makecvtitle
+
+% Add sections for your CV here
+\section{Experience}
+\cventry{Apr 2017 - Dec 2024}{Senior Developer}{Oneflow AB}{Stockholm \Large\texttwemoji{sweden}}{}{Description}
+
+\section{Experience}
+\cventry{Jan 2016 - Mar 2017}{System Developer}{Weavler AB}{Stockholm}{}{Description}
+
+\section{Developer Skills}
+\cvitem{Primary Languages}{Typescript/Javascript \Large\texttwemoji{star} \Large\texttwemoji{atom symbol} \Large\texttwemoji{infinity} \Large\texttwemoji{six_pointed_star} \Large\texttwemoji{star} }
+\cvitem{Secondary Languages}{Python \Large\texttwemoji{star} \Large\texttwemoji{star} \Large\texttwemoji{star} \Large\texttwemoji{star}}
+\cvitem{Web}{Reactjs eco system and Modern Web Technologies}
+\cvitem{Cloud}{AWS}
+\cvitem{Frameworks}{\href{https://github.com/spec-first/connexion}{Connexion}, \href{https://remix.run/}{Remix}, \href{https://nextjs.org/}{Nextjs}, \href{https://astro.build/}{Astro}}
+\cvitem{Learning}{LangChainjs, LLMs, Rust, Terraform, AWS SageMaker and Bedrock}
+
+\section{Recent Certifications and Courses (2024)}
+\cvitem{Langchainjs}{\href{https://learn.deeplearning.ai/accomplishments/f72f24f1-9ad2-4bc0-b8c2-33cbecb81ec2}{LangChain Chat with Your Data}}
+\cvitem{Langchain.js}{\href{https://learn.deeplearning.ai/accomplishments/14907d64-9ff2-4dc7-b5f7-ce42982f8551?usp=sharing}{Build LLM Apps with LangChain.js}}
+
+
+% \section{Projects}
+% \cvitem{E-commerce Platform}{Developed a full-featured e-commerce platform using Django and React. Implemented payment gateway integration and user authentication.}
+% \cvitem{DevOps Automation}{Automated deployment pipelines using Jenkins and Docker. Improved CI/CD processes and reduced deployment times by 50\%.}
+
+\section{Languages}
+\cvitem{Tamil}{Native}
+\cvitem{English}{Proficient}
+\cvitem{Swedish}{Beginner}
+
+\end{document}
