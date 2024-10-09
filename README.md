@@ -2,7 +2,7 @@
 
 CV build using latex
 
-![CV using Latex](images/latex-cv.png)
+![CV using Latex](images/latex-cv2.png)
 
 ### Tools
 
@@ -10,8 +10,9 @@ CV build using latex
 
 #### VSCode Plugins
 
+- [vscode-pdf](https://marketplace.visualstudio.com/items?itemName=tomoki1207.pdf)
 - [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
-- [Overleaf](https://marketplace.visualstudio.com/items?itemName=iamhyc.overleaf-workshop)
+- [Overleaf](https://marketplace.visualstudio.com/items?itemName=iamhyc.overleaf-workshop) (online templates)
 
 ### Manual generation
 

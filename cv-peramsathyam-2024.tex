@@ -9,7 +9,13 @@
 % \usepackage{uni8}
 % \usepackage{hwemoji}
 \usepackage{twemojis}
-
+% \usepackage{tikz}
+\usepackage[utf8]{inputenc}
+% \usepackage[T1]{fontenc}
+% \usepackage{lmodern}
+% \usepackage[T1]{fontenc}
+% \usepackage{fontawesome5}
+% \usepackage{color}
 
 % https://github.com/latex3/hyperref/blob/main/doc/hyperref-doc.tex#L141
 % \ifpdf
@@ -28,6 +34,7 @@
 % \fi
 
 \usepackage[scale=0.87]{geometry}
+\usepackage{amsmath}
 
 % Personal data
 \title{Curriculum Vitae}
@@ -39,39 +46,156 @@
 \setlength{\footskip}{50pt}
 \setlength{\hintscolumnwidth}{3.5cm}
 
+\newcommand{\cvsummary}[1]{
+  \vspace{1em}
+  \par\noindent\textbf{\large Summary}\par
+  \vspace{0.5em}
+  \begin{quote}
+    \small #1
+  \end{quote}
+  \vspace{1em}
+}
+
+
+%--COLORS-----------------------------------------------------
+\definecolor{lightGray}{HTML}{EFEFEF}
+\definecolor{flashyGreen}{HTML}{00FF00}
+\definecolor{lavenderBlue}{HTML}{C9DAF8}
+\definecolor{queenPink}{HTML}{ead1dc}
+\definecolor{black}{HTML}{000000}
+\definecolor{white}{HTML}{ffffff}
+%--COLORS----------------------------------------------------
+
+\newcommand{\badge}[2]{
+  \colorbox{#1}{\hspace{0.1em} #2 \hspace{0.1em}}
+}
+
+\newcommand{\mainTech}[1]{
+  \begin{flushleft}{\badge{flashyGreen}{Main} #1}\end{flushleft}
+}
+
+\newcommand{\techStackList}[1]{
+  \begin{flushleft}{\badge{queenPink}{Others} #1}\end{flushleft}
+}
+
 \begin{document}
 
-\name{Peramanathan}{Sathyamoorthy}
-
 \makecvtitle
+\vspace{-1.8em}
 
-% Add sections for your CV here
-\section{Experience}
-\cventry{Apr 2017 - Dec 2024}{Senior Developer}{Oneflow AB}{Stockholm \Large\texttwemoji{sweden}}{}{Description}
+% \begin{center}
+%   % Define the \roundpic command
+%   \newcommand{\roundpic}[1]{%
+%     \begin{tikzpicture}
+%       \node [rounded corners=1ex,clip,minimum width=3cm,minimum height=3cm] {\includegraphics[width=3cm]{#1}};
+%     \end{tikzpicture}%
+%   }
 
-\section{Experience}
-\cventry{Jan 2016 - Mar 2017}{System Developer}{Weavler AB}{Stockholm}{}{Description}
+%   % Use the \roundpic command
+%   \roundpic{images/latex-cv.png}
+% \end{center}
 
-\section{Developer Skills}
-\cvitem{Primary Languages}{Typescript/Javascript \Large\texttwemoji{star} \Large\texttwemoji{atom symbol} \Large\texttwemoji{infinity} \Large\texttwemoji{six_pointed_star} \Large\texttwemoji{star} }
-\cvitem{Secondary Languages}{Python \Large\texttwemoji{star} \Large\texttwemoji{star} \Large\texttwemoji{star} \Large\texttwemoji{star}}
-\cvitem{Web}{Reactjs eco system and Modern Web Technologies}
-\cvitem{Cloud}{AWS}
-\cvitem{Frameworks}{\href{https://github.com/spec-first/connexion}{Connexion}, \href{https://remix.run/}{Remix}, \href{https://nextjs.org/}{Nextjs}, \href{https://astro.build/}{Astro}}
-\cvitem{Learning}{LangChainjs, LLMs, Rust, Terraform, AWS SageMaker and Bedrock}
+% \cvsummary{
+%   Senior Web Developer with over 9 years of experience in developing and leading web applications in startup environments.
+%   Proven expertise in JavaScript, TypeScript, and React.js, with a strong background in integrating modern technologies into legacy systems.
+%   Adept at building and mentoring high-performing teams, fostering collaborative environments, and delivering innovative solutions that drive efficiency and user satisfaction.
+%   Demonstrated ability to integrate advanced features like speech recognition and to optimize platforms for SEO and accessibility.
+%   Passionate about creating innovative solutions and enhancing user experience. Passionate about continuous learning and contributing to meaningful projects
+% }
 
-\section{Recent Certifications and Courses (2024)}
+% \cvsummary{
+%   Senior Web Developer with over 8 years of experience in building scalable web applications and leading development teams.
+%   Proven expertise in JavaScript, TypeScript, and React.js, with a strong background in big data processing.
+%   Experienced educator who developed and taught robotics programming courses to high school students, demonstrating excellent communication and leadership skills.
+%   Passionate about mentoring and fostering innovation through technology.
+% }
+
+% \cvsummary{
+%  Senior Web Developer with over 8 years of experience in building scalable web applications and leading development teams. While pursuing a Master's degree in Computer Science, I gained practical industry experience that enhanced my academic work and provided a strong foundation in both theoretical and applied aspects of computer science
+% }
+
+% \cvsummary{
+%   Senior Web Developer with over 8 years of experience in building scalable web applications and leading development teams. Holds dual Master's degrees in Computer Science and Operations Research, providing a strong foundation in both theoretical and applied aspects of technology and optimization. Proven expertise in JavaScript, TypeScript, React.js, and big data processing with MongoDB. Demonstrated leadership in integrating innovative solutions and driving efficiency in startup environments. Experienced educator with a passion for mentoring and fostering innovation through technology
+% }
+
+\cvsummary{
+  \textbf{Senior Software Engineer} with over \textit{8 years} of experience in \textit{building} scalable web applications and \textit{leading} development teams.
+  Holds \textbf{Master's degrees} in \textbf{Computer Science} and \textbf{Operations Research}, providing a strong foundation in both theoretical and applied aspects of technology and optimization.
+  Proven expertise in \textbf{JavaScript, TypeScript, React.js}. Demonstrated leadership in integrating innovative solutions and driving efficiency in startup environments.
+  Experienced educator with a passion for mentoring and fostering innovation through technology.
+}
+
+\section{Recent Relevant Recorded Experiences}
+\cventry{Apr 2017 - Dec 2024}
+{Senior Software Engineer (Jan 2023 - Dec 2024)  \(\Uparrow\) Engineering Team Lead (Oct 2021 - Dec 2022) \(\Uparrow\) Full Stack Integration Engineer (Mar 2019 - Sep 2021)  \(\Uparrow\) JavaScript Developer(Apr 2017 - Feb 2019)}
+{Oneflow AB}
+{Stockholm \Large\texttwemoji{sweden}}{}
+{
+  \mainTech{\href{https://tc39.es/ecma262/}{JavaScript}, \href{https://www.typescriptlang.org/}{TypeScript}, \href{https://github.com/spec-first/connexion}{Connexion}, \href{https://react.dev/}{Reactjs}, \href{https://jestjs.io/}{Jest}, \href{https://enzymejs.github.io/enzyme/}{Enzyme}, \href{https://testing-library.com/}{testing-libary}, \href{https://playwright.dev/}{Playwright}}
+  \techStackList{\href{https://www.mysql.com/}{MySQL}, \href{https://expressjs.com/}{Express.js}, \href{https://flask.palletsprojects.com/en/3.0.x/}{Flask}, \href{https://www.python.org/}{Python},  \href{https://backbonejs.org/}{Backbone.js}, \href{https://marionettejs.com/}{Marionette}, \href{https://webpack.js.org/}{Webpack}, \href{https://gruntjs.com/}{Grunt.js}}
+}
+
+\vspace{1em}
+
+\cventry{Jan 2016 - Mar 2017}
+{Full Stack Developer}
+{Weavler AB}
+{Stockholm \Large\texttwemoji{sweden}}{}
+{\mainTech{JavaScript, Express.js, Nodejs, Server Side Rendering, Reactjs, Accessibility}}
+
+\section{Top Development skills at \textbf{Work}}
+\cvitem{Development}{Git, JavaScript, TypeScript, Reactjs, Redux, Redux-Saga, Flux Alt.js, MongoDB, AWS}
+\cvitem{Practices}{Continuously tuned and evolved Agile Methodologies, CI/CD, End-to-End Testing}
+\cvitem{Soft Skills}{Leadership, Team Building, Mentorship, Cross-Team Collaboration, Strategic Epic Planning, Problem-Solving, Communication, Creative Thinking}
+
+\section{Recent Certifications and Courses (Septemper 2024 - Present)}
+\cvitem{Terraform}{\href{https://github.com/p10ns11y/oreilly-terraform-live-course-session}{HashiCorp Terraform Associate Exam Cram [O'Reilly Live Event] 2 days Live Course}}
 \cvitem{Langchainjs}{\href{https://learn.deeplearning.ai/accomplishments/f72f24f1-9ad2-4bc0-b8c2-33cbecb81ec2}{LangChain Chat with Your Data}}
 \cvitem{Langchain.js}{\href{https://learn.deeplearning.ai/accomplishments/14907d64-9ff2-4dc7-b5f7-ce42982f8551?usp=sharing}{Build LLM Apps with LangChain.js}}
 
 
-% \section{Projects}
-% \cvitem{E-commerce Platform}{Developed a full-featured e-commerce platform using Django and React. Implemented payment gateway integration and user authentication.}
-% \cvitem{DevOps Automation}{Automated deployment pipelines using Jenkins and Docker. Improved CI/CD processes and reduced deployment times by 50\%.}
+\section{Occasionally Used and Familiar Technologies}
+\cvitem{AGI \& Infra\badge{lightGray}{New}}{LangChainjs, LLMs, Terraform, AWS SageMaker and Bedrock (Work In Progress)}
+\cvitem{Fullstack}{\href{https://remix.run/}{Remix}, \href{https://nextjs.org/}{Nextjs}, \href{https://astro.build/}{Astro}}
+\cvitem{Languages}{C, C++, Java, R, Erlang, Rust}
+\cvitem{Machine Learning}{R, Python, NumPy, Panda, Ski-kit Learn}
+\cvitem{Frond-End tools}{Vitejs}
+\cvitem{API Frameworks}{Django, Flask, Eve}
+\cvitem{Databases}{MySQL, Postgres, MongoDB}
+\cvitem{Deployment}{AWS (EC2, S3, IAM, ELB), Heroku, Netlify, Vercel, Fly.io}
+\cvitem{Miscellaneous}{Data Visualization, KPI Implementation, SEO Optimization, Accessibility Compliance, Speech Recognition, Chat Bot Development}
 
-\section{Languages}
-\cvitem{Tamil}{Native}
-\cvitem{English}{Proficient}
-\cvitem{Swedish}{Beginner}
+
+% \input{macros/timeline.tex}
+
+
+%main color
+% \definecolor{maincol}{RGB}{255,150,0}
+
+%secondary colors
+% \definecolor{secondcol}{RGB}{0,178,255}
+% \definecolor{thirdcol}{RGB}{0,80,130}
+% \definecolor{fourthcol}{RGB}{0,100,160}
+% \definecolor{fifthcol}{RGB}{0,120,200}
+% \definecolor{sixthcol}{RGB}{0,80,130}
+
+%background color
+% \definecolor{bgcol}{RGB}{190,220,255}
+
+%textcolor
+% \definecolor{textcol}{RGB}{0,50,80}
+
+%sectioncolor
+% \definecolor{sectcol}{RGB}{255,255,255}
+
+% \definecolor{thirdcol}{rgb}{0,0,0} % Define the color textcol
+% \begin{cvtimeline}{2010}{2024}{20}{\linewidth}
+% \cvevent{8/2010}{9/2012}{MSc Computer Science}{Uppsala University}{Sweden}{thirdcol}{0}
+
+% \cvevent{2015}{Graduated from Uppsala}{Uppsala}{Sweden}{Description}
+% \cevent{2016}{Started working at Weavler}{Stockholm}{Sweden}{}
+% \cvevent{2017}{Started working at Oneflow}{Stockholm}{Sweden}{}
+% \cvevent{2024}{Certified LangChainjs}{Stockholm}{Sweden}{}
+% \end{cvtimeline}
 
 \end{document}
