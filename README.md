@@ -22,6 +22,10 @@ Run
 pdflatex <.tex filename>
 ```
 
-#### Auto generating PDFs
+### Auto generating PDFs
 
 Refer the [settings](vscode/settings.json)
+
+### Credits and gratitude
+
+- [ChatGPT CV Polish using 01-preview model](https://chatgpt.com/share/670684ae-8d00-8005-86fd-fe9c6c6ff779)
