@@ -1,0 +1,13 @@
+\pgfkeys{
+  /social/.cd,
+  LinkedIn/.initial={https://www.linkedin.com/in/sathyam-peram/},
+}%
+
+\newcommand{\sociallink}[1]{%
+  \pgfkeysvalueof{/social/#1}%
+}
+
+\newcommand{\linkto}[1]{%
+  \edef\tempurl{\sociallink{#1}}%
+  \href{\tempurl}{#1}%
+}

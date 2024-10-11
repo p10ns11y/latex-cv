@@ -1,0 +1,26 @@
+\ProvidesPackage{visualtweaks}
+%--COLORS-----------------------------------------------------
+\definecolor{lightGray}{HTML}{EFEFEF}
+\definecolor{flashyGreen}{HTML}{00FF00}
+\definecolor{lavenderBlue}{HTML}{C9DAF8}
+\definecolor{queenPink}{HTML}{ead1dc}
+\definecolor{black}{HTML}{000000}
+\definecolor{white}{HTML}{ffffff}
+\definecolor{mixedBlueGray}{HTML}{4040BF}
+\definecolor{Saffron}{HTML}{FF9933}
+\definecolor{Navyblue}{HTML}{000080}
+\definecolor{Green}{HTML}{138808}
+%--COLORS----------------------------------------------------
+
+
+\newcommand{\badge}[2]{
+  \colorbox{#1}{\hspace{0.1em} #2 \hspace{0.1em}}
+}
+
+\newcommand{\mainTech}[1]{
+  \begin{flushleft}{\badge{flashyGreen}{Main} #1}\end{flushleft}
+}
+
+\newcommand{\techStackList}[1]{
+  \begin{flushleft}{\badge{queenPink}{Others} #1}\end{flushleft}
+}

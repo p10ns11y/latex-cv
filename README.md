@@ -2,7 +2,7 @@
 
 CV build using latex
 
-![CV using Latex](images/latex-cv2.png)
+![CV using Latex](images/latex-cv-extensible.png)
 
 ### Tools
 
