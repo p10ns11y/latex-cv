@@ -1,13 +1,27 @@
 \pgfkeys{
   /social/.cd,
   LinkedIn/.initial={https://www.linkedin.com/in/sathyam-peram/},
+  GitHub/.initial={https://github.com/p10ns11y}, % TODO: Update to GitHub README
+  X/.initial={https://x.com/peramanathan}
+}%
+
+\pgfkeys{
+  /socialicons/.cd,
+  ExternalLink/.initial={\faExternalLink*},
+  LinkedIn/.initial={\faLinkedin},
+  GitHub/.initial={\faGithub},
+  % X/.initial={\faicon{externalLink}} TODO: Update to X icon
 }%
 
 \newcommand{\sociallink}[1]{%
   \pgfkeysvalueof{/social/#1}%
 }
 
+\newcommand{\socialicons}[1]{%
+  \pgfkeysvalueof{/socialicons/#1}%
+}
+
 \newcommand{\linkto}[1]{%
   \edef\tempurl{\sociallink{#1}}%
-  \href{\tempurl}{#1}%
+  \href{\tempurl}{\socialicons{#1}}%
 }
