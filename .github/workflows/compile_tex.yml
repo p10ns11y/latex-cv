@@ -15,12 +15,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.2.1
+
+      - name: Mark the working directory as safe for Git
+        run: |
+          git config --global --add safe.directory ${{ github.workspace }}
 
       - name: Find and compile .tex files
         run: |
           # Find all .tex files and compile them to PDFs
-          find . -maxdepth 2 -name "cv-*.tex" -print0 | while IFS= read -r -d '' file; do
+          find . -maxdepth 2 -name "cv-*.tex" | while IFS= read -r file; do
             echo "Compiling $file to PDF"
             pdflatex "$file"
           done
@@ -46,7 +50,7 @@ jobs:
           echo "::set-output name=branch_name::$BRANCH_NAME"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7.0.5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ steps.create_branch.outputs.branch_name }}
