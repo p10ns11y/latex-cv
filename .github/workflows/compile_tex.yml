@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch: # Allows manual triggering from GitHub UI
 
+# Permissions for the `GITHUB_TOKEN`
+permissions:
+  contents: write # Required for pushing commits
+  pull-requests: write # Required for creating pull requests
+
 jobs:
   compile-latex:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
