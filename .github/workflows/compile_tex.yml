@@ -24,10 +24,12 @@ jobs:
       - name: Find and compile .tex files
         run: |
           # Find all .tex files and compile them to PDFs
-          find . -maxdepth 2 -name "cv-*.tex" | while IFS= read -r file; do
-            echo "Compiling $file to PDF"
-            pdflatex "$file"
-          done
+          # Has relative path issues running from root level for tex in folders
+          # find . -maxdepth 2 -name "cv-*.tex" | while IFS= read -r file; do
+          #   echo "Compiling $file to PDF"
+          #   pdflatex "$file"
+          # done
+          pdflatex cv-peramsathyam-base.tex
 
       - name: Set up Git configuration
         run: |
