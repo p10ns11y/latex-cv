@@ -1,0 +1,56 @@
+name: Compile LaTeX to PDF
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering from GitHub UI
+
+jobs:
+  compile-latex:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    runs-on: ubuntu-latest
+    container:
+      image: danteev/texlive # Pre-built image with LaTeX installed
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Find and compile .tex files
+        run: |
+          # Find all .tex files and compile them to PDFs
+          find . -maxdepth 2 -name "cv-*.tex" -print0 | while IFS= read -r -d '' file; do
+            echo "Compiling $file to PDF"
+            pdflatex "$file"
+          done
+
+      - name: Set up Git configuration
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Create and push changes to a new branch
+        id: create_branch
+        run: |
+          # Generate a new branch name based on commit SHA or run number to avoid conflicts
+          BRANCH_NAME="pdf-update-${{ github.run_number }}-${{ github.sha }}"
+
+          # Create and push the new branch
+          git checkout -b $BRANCH_NAME
+          git add *.pdf
+          git commit -m "Add/Update PDFs compiled from LaTeX files [ci skip]"
+          git push origin $BRANCH_NAME
+
+          # Expose branch name for future steps
+          echo "::set-output name=branch_name::$BRANCH_NAME"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.create_branch.outputs.branch_name }}
+          base: main
+          title: 'Update PDFs from LaTeX compilation'
+          body: 'This PR contains the compiled PDFs from the LaTeX files in the repository.'
+          labels: 'auto-pdf-update'
