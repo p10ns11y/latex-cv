@@ -17,9 +17,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.2.1
 
+      - name: Print working directory (debug step)
+        run: |
+          echo "Current working directory:"
+          pwd
+          echo "Listing directory contents:"
+          ls -la
+
       - name: Mark the working directory as safe for Git
         run: |
-          git config --global --add safe.directory ${{ github.workspace }}
+          git config --global --add safe.directory $(pwd)
 
       - name: Find and compile .tex files
         run: |
