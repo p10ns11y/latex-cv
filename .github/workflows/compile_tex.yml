@@ -70,7 +70,10 @@ jobs:
           git push origin $BRANCH_NAME
 
           # Expose branch name for future steps
-          echo "::set-output name=branch_name::$BRANCH_NAME"
+          # echo "::set-output name=branch_name::$BRANCH_NAME"
+          # https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
+          # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#example-of-setting-an-output-parameter
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request using GitHub API
         run: |
