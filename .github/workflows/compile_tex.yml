@@ -23,7 +23,7 @@ jobs:
       - name: Check if curl is available
         run: |
           if ! command -v curl &> /dev/null; then
-            apt-get update && sudo apt-get install -y curl
+            apt-get update && apt-get install -y curl
           else
             echo "curl is already installed!"
           fi
