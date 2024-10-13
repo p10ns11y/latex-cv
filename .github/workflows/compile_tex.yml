@@ -19,6 +19,15 @@ jobs:
       image: danteev/texlive # Pre-built image with LaTeX installed
 
     steps:
+      # Step 1: Check if curl is available
+      - name: Check if curl is available
+        run: |
+          if ! command -v curl &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y curl
+          else
+            echo "curl is already installed!"
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v4.2.1
 
@@ -63,12 +72,17 @@ jobs:
           # Expose branch name for future steps
           echo "::set-output name=branch_name::$BRANCH_NAME"
 
- #     - name: Create Pull Request
- #       uses: peter-evans/create-pull-request@v7.0.5
- #       with:
- #         token: ${{ secrets.GITHUB_TOKEN }}
- #         branch: ${{ steps.create_branch.outputs.branch_name }}
- #         base: main
- #         title: 'Update PDFs from LaTeX compilation'
- #         body: 'This PR contains the compiled PDFs from the LaTeX files in the repository.'
-  #        labels: 'auto-pdf-update'
+      - name: Create Pull Request using GitHub API
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/pulls \
+            -d @- << EOF
+          {
+            "title": "Update PDFs from LaTeX compilation",
+            "head": "${{ steps.create_branch.outputs.branch_name }}",
+            "base": "main",
+            "body": "This PR contains the compiled PDFs from the LaTeX files in the repository."
+          }
+          EOF
