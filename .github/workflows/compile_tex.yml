@@ -63,12 +63,12 @@ jobs:
           # Expose branch name for future steps
           echo "::set-output name=branch_name::$BRANCH_NAME"
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7.0.5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.create_branch.outputs.branch_name }}
-          base: main
-          title: 'Update PDFs from LaTeX compilation'
-          body: 'This PR contains the compiled PDFs from the LaTeX files in the repository.'
-          labels: 'auto-pdf-update'
+ #     - name: Create Pull Request
+ #       uses: peter-evans/create-pull-request@v7.0.5
+ #       with:
+ #         token: ${{ secrets.GITHUB_TOKEN }}
+ #         branch: ${{ steps.create_branch.outputs.branch_name }}
+ #         base: main
+ #         title: 'Update PDFs from LaTeX compilation'
+ #         body: 'This PR contains the compiled PDFs from the LaTeX files in the repository.'
+  #        labels: 'auto-pdf-update'
