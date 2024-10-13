@@ -13,12 +13,12 @@ permissions:
 
 jobs:
   compile-latex:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
     runs-on: ubuntu-latest
     container:
       image: danteev/texlive # Pre-built image with LaTeX installed
 
     steps:
-      # Step 1: Check if curl is available
       - name: Check if curl is available
         run: |
           if ! command -v curl &> /dev/null; then
@@ -29,19 +29,8 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4.2.1
-        
-      - name: Check for [ci skip] in commit message
-        id: check_skip
-        run: |
-          if git log -1 --pretty=%B | grep -q '\[ci skip\]'; then
-            echo "Commit message contains [ci skip], skipping workflow."
-            exit 0
-          else
-            echo "No [ci skip] found in commit message, continuing workflow."
-          fi
 
       - name: Print working directory (debug step)
-        if: steps.check_skip.outcome != 'success'
         run: |
           echo "Current working directory:"
           pwd
@@ -49,12 +38,10 @@ jobs:
           ls -la
 
       - name: Mark the working directory as safe for Git
-        if: steps.check_skip.outcome != 'success'
         run: |
           git config --global --add safe.directory $(pwd)
 
       - name: Find and compile .tex files
-        if: steps.check_skip.outcome != 'success'
         run: |
           # Find all .tex files and compile them to PDFs
           # Has relative path issues running from root level for tex in folders
@@ -65,14 +52,12 @@ jobs:
           pdflatex cv-peramsathyam-base.tex
 
       - name: Set up Git configuration
-        if: steps.check_skip.outcome != 'success'
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
       - name: Create and push changes to a new branch
         id: create_branch
-        if: steps.check_skip.outcome != 'success'
         run: |
           # Generate a new branch name based on commit SHA or run number to avoid conflicts
           BRANCH_NAME="pdf-update-${{ github.run_number }}-${{ github.sha }}"
@@ -90,7 +75,6 @@ jobs:
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request using GitHub API
-        if: steps.check_skip.outcome != 'success'
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
@@ -98,7 +82,7 @@ jobs:
             https://api.github.com/repos/${{ github.repository }}/pulls \
             -d @- << EOF
           {
-            "title": "Update PDFs from LaTeX compilation",
+            "title": "Update PDFs from LaTeX compilation [ci skip] ${{ github.run_number }}",
             "head": "${{ steps.create_branch.outputs.branch_name }}",
             "base": "main",
             "body": "This PR contains the compiled PDFs from the LaTeX files in the repository."
