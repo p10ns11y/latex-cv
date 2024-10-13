@@ -30,8 +30,19 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4.2.1
+        
+      - name: Check for [ci skip] in commit message
+        id: check_skip
+        run: |
+          if git log -1 --pretty=%B | grep -q '\[ci skip\]'; then
+            echo "Commit message contains [ci skip], skipping workflow."
+            exit 0
+          else
+            echo "No [ci skip] found in commit message, continuing workflow."
+          fi
 
       - name: Print working directory (debug step)
+        if: steps.check_skip.outcome != 'success'
         run: |
           echo "Current working directory:"
           pwd
