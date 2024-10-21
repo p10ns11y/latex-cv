@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   compile-latex:
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
     runs-on: ubuntu-latest
     container:
       image: danteev/texlive # Pre-built image with LaTeX installed
@@ -30,12 +29,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.2.1
 
-      - name: Print working directory (debug step)
-        run: |
-          echo "Current working directory:"
-          pwd
-          echo "Listing directory contents:"
-          ls -la
+      # - name: Print working directory (debug step)
+      #   run: |
+      #     echo "Current working directory:"
+      #     pwd
+      #     echo "Listing directory contents:"
+      #     ls -la
 
       - name: Mark the working directory as safe for Git
         run: |
