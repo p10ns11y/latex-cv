@@ -2,7 +2,7 @@
 
 CV build using latex
 
-![CV using Latex](images/latex-cv-with-social-handles.png)
+![CV using Latex](images/latex-cv3.png)
 
 ### Tools
 
