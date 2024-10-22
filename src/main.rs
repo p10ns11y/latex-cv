@@ -3,14 +3,24 @@ use std::fs::read_dir;
 
 use aws_config::meta::region::RegionProviderChain;
 use aws_config::BehaviorVersion;
-use aws_sdk_s3::{Client, Error};
+use aws_sdk_s3::{Client, Error as S3Error};
 use aws_sdk_s3::primitives::ByteStream;
 
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
 
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+enum UploadError {
+    #[error("S3 error: {0}")]
+    S3Error(#[from] S3Error),
+    #[error("IO error: {0}")]
+    IOError(#[from] std::io::Error),
+}
+
 // write a function that uploads generated PDFs to an AWS S3 bucket
-async fn upload_to_aws_s3() -> Result<(), Error> {
+async fn upload_to_aws_s3() -> Result<(), UploadError> {
   print!("Uploading PDFs to S3...");
   let region_provider = RegionProviderChain::default_provider().or_else("us-east-1");
   let config = aws_config::defaults(BehaviorVersion::latest())
@@ -22,19 +32,20 @@ async fn upload_to_aws_s3() -> Result<(), Error> {
 
   let paths = read_dir("./pdfs").unwrap();
   for path in paths {
-      let path = path.unwrap().path();
-      if path.extension().unwrap() == "pdf" {
-          let mut file = File::open(&path).await?;
-          let mut buffer = Vec::new();
-          file.read_to_end(&mut buffer).await?;
-          let byte_stream = ByteStream::from(buffer);
+    let path = path.map_err(UploadError::IOError)?.path();
+    if path.extension().unwrap() == "pdf" {
+        let mut file = File::open(&path).await.map_err(UploadError::IOError)?;
+        let mut buffer = Vec::new();
+        file.read_to_end(&mut buffer).await.map_err(UploadError::IOError)?;
+        let byte_stream = ByteStream::from(buffer);
 
-          client.put_object()
-              .bucket("my-bucket")
-              .key(path.file_name().unwrap().to_str().unwrap())
-              .body(byte_stream)
-              .send()
-              .await?;
+        client.put_object()
+            .bucket("toileredcvs")
+            .key(path.file_name().unwrap().to_str().unwrap())
+            .body(byte_stream)
+            .send()
+            .await
+            .map_err(|e| UploadError::S3Error(e.into()))?;
       }
   }
 
@@ -42,7 +53,7 @@ async fn upload_to_aws_s3() -> Result<(), Error> {
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), UploadError> {
   println!("Generating PDFs...");
   let output = Command::new("sh")
       .arg("-c")

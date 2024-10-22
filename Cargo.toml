@@ -8,4 +8,5 @@ edition = "2021"
 [dependencies]
 aws-config = "1.5.8"
 aws-sdk-s3 = "1.57.0"
+thiserror = "1.0.64"
 tokio = { version = "1.41.0", features = ["full"] }
