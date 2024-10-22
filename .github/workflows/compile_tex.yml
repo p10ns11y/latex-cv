@@ -36,7 +36,7 @@ jobs:
           fi
       
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1.7.0
+        uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
           role-to-assume: arn:aws:iam::977913560033:role/githubactions
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
