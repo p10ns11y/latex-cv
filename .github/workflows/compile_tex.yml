@@ -42,10 +42,10 @@ jobs:
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: eu-north-1
       
-      # Hello from AWS
-      - name: Sts GetCallerIdentity
-        run: |
-          aws sts get-caller-identity
+      # # Hello from AWS
+      # - name: Sts GetCallerIdentity
+      #   run: |
+      #     aws sts get-caller-identity
 
       - name: Checkout repository
         uses: actions/checkout@v4.2.1
