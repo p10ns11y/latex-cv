@@ -8,6 +8,7 @@ on:
 
 # Permissions for the `GITHUB_TOKEN`
 permissions:
+  id-token: write 
   contents: write # Required for pushing commits
   pull-requests: write # Required for creating pull requests
 
@@ -25,6 +26,26 @@ jobs:
           else
             echo "curl is already installed!"
           fi
+
+      - name: Install rustup, if needed
+        shell: bash
+        run: |
+          if ! command -v rustup &> /dev/null ; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none -y
+            echo "${CARGO_HOME:-$HOME/.cargo}/bin" >> $GITHUB_PATH
+          fi
+      
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::977913560033:role/githubactions
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: eu-north-1
+      
+      # Hello from AWS
+      - name: Sts GetCallerIdentity
+        run: |
+          aws sts get-caller-identity
 
       - name: Checkout repository
         uses: actions/checkout@v4.2.1
@@ -44,11 +65,12 @@ jobs:
         run: |
           # Find all .tex files and compile them to PDFs
           # Has relative path issues running from root level for tex in folders
-          find . -maxdepth 1 -name "cv-*.tex" | while IFS= read -r file; do
-            echo "Compiling $file to PDF"
-            pdflatex "$file"
-          done
+          # find . -maxdepth 1 -name "cv-*.tex" | while IFS= read -r file; do
+          #   echo "Compiling $file to PDF"
+          #   pdflatex "$file"
+          # done
           # pdflatex cv-peramsathyam-base.tex
+          cargo run
 
       - name: Set up Git configuration
         run: |
