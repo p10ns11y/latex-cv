@@ -1,15 +1,18 @@
-use std::process::Command;
 use std::fs::read_dir;
+use std::process::Command;
 
 use aws_config::meta::region::RegionProviderChain;
 use aws_config::BehaviorVersion;
-use aws_sdk_s3::{Client, Error as S3Error};
+use aws_sdk_s3::operation::head_bucket::HeadBucketError;
 use aws_sdk_s3::primitives::ByteStream;
+use aws_sdk_s3::{error::SdkError, types::VersioningConfiguration, Client, Error as S3Error};
 
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
 
 use thiserror::Error;
+
+static BUCKET_NAME: &str = "peramsathyamcvs";
 
 #[derive(Error, Debug)]
 enum UploadError {
@@ -19,65 +22,136 @@ enum UploadError {
     IOError(#[from] std::io::Error),
 }
 
-// write a function that uploads generated PDFs to an AWS S3 bucket
 async fn upload_to_aws_s3() -> Result<(), UploadError> {
-  print!("Uploading PDFs to S3...");
-  let region_provider = RegionProviderChain::default_provider().or_else("us-east-1");
-  let config = aws_config::defaults(BehaviorVersion::latest())
+    print!("Uploading CVs to S3...");
+    let region_provider = RegionProviderChain::default_provider().or_else("us-east-1");
+    let config = aws_config::defaults(BehaviorVersion::latest())
         .region(region_provider)
         .load()
         .await;
-  let client = Client::new(&config);
+    let client = Client::new(&config);
 
+    create_bucket_if_not_exists(&client).await?;
+    set_bucket_policy(&client).await?;
+    enable_bucket_versioning(&client).await?;
 
-  let paths = read_dir("./pdfs").unwrap();
-  for path in paths {
-    let path = path.map_err(UploadError::IOError)?.path();
-    if path.extension().unwrap() == "pdf" {
-        let mut file = File::open(&path).await.map_err(UploadError::IOError)?;
-        let mut buffer = Vec::new();
-        file.read_to_end(&mut buffer).await.map_err(UploadError::IOError)?;
-        let byte_stream = ByteStream::from(buffer);
+    let paths = read_dir("./pdfs").unwrap();
+    for path in paths {
+        let path = path.map_err(UploadError::IOError)?.path();
+        if path.extension().unwrap() == "pdf" {
+            let mut file = File::open(&path).await.map_err(UploadError::IOError)?;
+            let mut buffer = Vec::new();
+            file.read_to_end(&mut buffer)
+                .await
+                .map_err(UploadError::IOError)?;
+            let byte_stream = ByteStream::from(buffer);
 
-        client.put_object()
-            .bucket("toileredcvs")
-            .key(path.file_name().unwrap().to_str().unwrap())
-            .body(byte_stream)
-            .send()
-            .await
-            .map_err(|e| UploadError::S3Error(e.into()))?;
-      }
-  }
+            client
+                .put_object()
+                .bucket(BUCKET_NAME)
+                .key(path.file_name().unwrap().to_str().unwrap())
+                .body(byte_stream)
+                .content_disposition("inline")
+                .content_type("application/pdf")
+                .send()
+                .await
+                .map_err(|e| UploadError::S3Error(e.into()))?;
+        }
+    }
 
-  Ok(())
+    print!("CVs Uploaded to S3");
+
+    Ok(())
+}
+
+async fn create_bucket_if_not_exists(client: &Client) -> Result<(), UploadError> {
+    match client.head_bucket().bucket(BUCKET_NAME).send().await {
+        Ok(_) => {
+            println!("Bucket '{}' already exists.", BUCKET_NAME);
+        }
+        Err(SdkError::ServiceError(ref e)) if matches!(e.err(), HeadBucketError::NotFound(_)) => {
+            client
+                .create_bucket()
+                .bucket(BUCKET_NAME)
+                .send()
+                .await
+                .map_err(|e| UploadError::S3Error(e.into()))?;
+            println!("Bucket '{}' created.", BUCKET_NAME);
+        }
+        Err(e) => {
+            return Err(UploadError::S3Error(e.into()));
+        }
+    }
+
+    Ok(())
+}
+
+async fn set_bucket_policy(client: &Client) -> Result<(), UploadError> {
+    client
+        .put_bucket_policy()
+        .bucket(BUCKET_NAME)
+        .policy(&format!(
+            r#"{{
+            "Version": "2012-10-17",
+            "Statement": [
+                {{
+                    "Effect": "Allow",
+                    "Principal": "*",
+                    "Action": "s3:GetObject",
+                    "Resource": "arn:aws:s3:::{}/*"
+                }}
+            ]
+        }}"#,
+            BUCKET_NAME
+        ))
+        .send()
+        .await
+        .map_err(|e| UploadError::S3Error(e.into()))?;
+
+    Ok(())
+}
+
+async fn enable_bucket_versioning(client: &Client) -> Result<(), UploadError> {
+    client
+        .put_bucket_versioning()
+        .bucket(BUCKET_NAME)
+        .versioning_configuration(
+            VersioningConfiguration::builder()
+                .status(aws_sdk_s3::types::BucketVersioningStatus::Enabled)
+                .build(),
+        )
+        .send()
+        .await
+        .map_err(|e| UploadError::S3Error(e.into()))?;
+
+    Ok(())
 }
 
 #[tokio::main]
 async fn main() -> Result<(), UploadError> {
-  println!("Generating PDFs...");
-  let output = Command::new("sh")
-      .arg("-c")
-      .arg("find . -maxdepth 1 -name 'cv*.tex' -exec pdflatex {} \\;")
-      .output()
-      .expect("failed to execute process");
+    println!("Generating PDFs...");
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg("find . -maxdepth 1 -name 'cv*.tex' -exec pdflatex {} \\;")
+        .output()
+        .expect("failed to execute process");
 
-  println!("{}", output.status);
-  // println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-  println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+    println!("{}", output.status);
+    // println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+    println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
 
-  // fix: move the pdf to a folder called 'pdfs' and create the output folder if it does not exist
-  let output = Command::new("sh")
-      .arg("-c")
-      .arg("mkdir -p pdfs && mv cv*.pdf pdfs")
-      .output()
-      .expect("failed to execute process");
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg("mkdir -p pdfs && mv cv*.pdf pdfs")
+        .output()
+        .expect("failed to execute process");
 
-  println!("{}",output.status);
-  // println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-  println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
-  println!("PDFs generated successfully!");
+    println!("{}", output.status);
+    // println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+    println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+    println!("PDFs generated successfully!");
 
-  upload_to_aws_s3().await?;
+    upload_to_aws_s3().await?;
 
-  Ok(())
+    Ok(())
 }
