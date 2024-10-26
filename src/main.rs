@@ -7,7 +7,7 @@ use aws_sdk_s3::operation::head_bucket::HeadBucketError;
 use aws_sdk_s3::primitives::ByteStream;
 use aws_sdk_s3::{
     error::SdkError,
-    types::{CreateBucketConfiguration, VersioningConfiguration},
+    types::{CreateBucketConfiguration, PublicAccessBlockConfiguration, VersioningConfiguration},
     Client, Error as S3Error,
 };
 
@@ -89,7 +89,27 @@ async fn create_bucket_if_not_exists(client: &Client) -> Result<(), UploadError>
                 .send()
                 .await
                 .map_err(|e| UploadError::S3Error(e.into()))?;
-            println!("Bucket '{}' created.", BUCKET_NAME);
+
+            // Disable Block Public Access settings
+            client
+                .put_public_access_block()
+                .bucket(BUCKET_NAME)
+                .public_access_block_configuration(
+                    PublicAccessBlockConfiguration::builder()
+                        .block_public_acls(true) // Block public ACLs
+                        .ignore_public_acls(true) //  Ignore public ACLs
+                        .block_public_policy(false) // Allow public bucket policies
+                        .restrict_public_buckets(false) // Do not restrict public buckets
+                        .build(),
+                )
+                .send()
+                .await
+                .map_err(|e| UploadError::S3Error(e.into()))?;
+
+            println!(
+                "Bucket '{}' created with public access settings.",
+                BUCKET_NAME
+            );
         }
         Err(e) => {
             return Err(UploadError::S3Error(e.into()));
