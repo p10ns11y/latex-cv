@@ -5,7 +5,11 @@ use aws_config::meta::region::RegionProviderChain;
 use aws_config::BehaviorVersion;
 use aws_sdk_s3::operation::head_bucket::HeadBucketError;
 use aws_sdk_s3::primitives::ByteStream;
-use aws_sdk_s3::{error::SdkError, types::VersioningConfiguration, Client, Error as S3Error};
+use aws_sdk_s3::{
+    error::SdkError,
+    types::{CreateBucketConfiguration, VersioningConfiguration},
+    Client, Error as S3Error,
+};
 
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
@@ -65,6 +69,8 @@ async fn upload_to_aws_s3() -> Result<(), UploadError> {
 }
 
 async fn create_bucket_if_not_exists(client: &Client) -> Result<(), UploadError> {
+    let region_provider = RegionProviderChain::default_provider().or_else("us-east-1");
+
     match client.head_bucket().bucket(BUCKET_NAME).send().await {
         Ok(_) => {
             println!("Bucket '{}' already exists.", BUCKET_NAME);
@@ -73,6 +79,13 @@ async fn create_bucket_if_not_exists(client: &Client) -> Result<(), UploadError>
             client
                 .create_bucket()
                 .bucket(BUCKET_NAME)
+                .create_bucket_configuration(
+                    CreateBucketConfiguration::builder()
+                        .location_constraint(
+                            region_provider.region().await.unwrap().as_ref().into(),
+                        )
+                        .build(),
+                )
                 .send()
                 .await
                 .map_err(|e| UploadError::S3Error(e.into()))?;
