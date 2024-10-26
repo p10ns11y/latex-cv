@@ -1,4 +1,4 @@
-# latex-cv
+# LaTeX CV Generator
 
 CV build using latex
 
@@ -22,9 +22,13 @@ Run
 pdflatex <.tex filename>
 ```
 
-### Auto generating PDFs
+### Auto generating PDFs using vscode plugin update the following setting in IDE
 
 Refer the [settings](vscode/settings.json)
+
+### GitHub Action Workflow
+
+This project uses a Rust Cargo project with the AWS SDK to generate PDFs and push them to S3 buckets.
 
 ### Credits and gratitude
 
