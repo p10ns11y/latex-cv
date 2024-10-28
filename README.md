@@ -2,7 +2,7 @@
 
 CV build using latex
 
-![CV using Latex](images/latex-cv3.png)
+![CV using Latex](images/latexcvdetailed.png)
 
 ### Tools
 
@@ -29,6 +29,33 @@ Refer the [settings](vscode/settings.json)
 ### GitHub Action Workflow
 
 This project uses a Rust Cargo project with the AWS SDK to generate PDFs and push them to S3 buckets.
+The rust script also does the following:
+
+```rs
+create_bucket_if_not_exists(&client).await?;
+set_bucket_policy(&client).await?;
+enable_bucket_versioning(&client).await?;
+```
+
+- Creates in the bucket is not exists (in future creating new ones becomes easier)
+- Set the bucket policy to allow public to read the assets (CVs)
+  ```rs
+  "Statement": [
+    {{
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::{}/*"
+    }}
+  ]
+  ```
+- Enables bucket versioning every time CVs are pushed
+
+### OpenID
+
+GitHub Actions and AWS connected using OpenID and using dedicated role
+That can operate only on main branch of this repo to avoid copying
+the AWS secrets to GitHub repo or settings.
 
 ### Credits and gratitude
 
