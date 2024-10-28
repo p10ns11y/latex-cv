@@ -16,7 +16,7 @@ use tokio::io::AsyncReadExt;
 
 use thiserror::Error;
 
-static BUCKET_NAME: &str = "peramsathyamcvs";
+static BUCKET_NAME: &str = "peramsathyam";
 
 #[derive(Error, Debug)]
 enum UploadError {
@@ -53,7 +53,10 @@ async fn upload_to_aws_s3() -> Result<(), UploadError> {
             client
                 .put_object()
                 .bucket(BUCKET_NAME)
-                .key(path.file_name().unwrap().to_str().unwrap())
+                .key(format!(
+                    "cvs/{}",
+                    path.file_name().unwrap().to_str().unwrap()
+                ))
                 .body(byte_stream)
                 .content_disposition("inline")
                 .content_type("application/pdf")
