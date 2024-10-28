@@ -5,10 +5,17 @@
   "latex-workshop.latex.outDir": "%DIR%/out",
   "latex-workshop.intellisense.argumentHint.enabled": true,
   "latex-workshop.latex.recipe.default": "pdflatex",
+  "terminal.integrated.env.osx": {
+    // This too didn't resolve pdflatex path for latex workshop plugin
+    // Commandline tools works fine in integrated terminal
+    // Even without this
+    "PATH": "/Library/TeX/texbin:${env:PATH}"
+  },
   "latex-workshop.latex.tools": [
     {
       "name": "pdflatex",
-      "command": "pdflatex",
+      // Something odd after upgrade, needs full path to pdflatex (fille in `which pdflatex`)
+      "command": "/Library/TeX/texbin/pdflatex",
       "args": [
         "-synctex=1",
         "-interaction=nonstopmode",
@@ -19,7 +26,8 @@
     },
     {
       "name": "latexmk",
-      "command": "latexmk",
+      // Something odd after upgrade, needs full path to latexmk (fille in `which latexmk`)
+      "command": "/Library/TeX/texbin/latexmk",
       "args": [
         "-pdf",
         "-pdflatex=pdflatex %O %S",
