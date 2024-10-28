@@ -45,7 +45,7 @@ enable_bucket_versioning(&client).await?;
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::{}/*"
+      "Resource": "arn:aws:s3:::<bucket_name>/<folder_name>/*"
     }}
   ]
   ```
@@ -56,6 +56,11 @@ enable_bucket_versioning(&client).await?;
 GitHub Actions and AWS connected using OpenID and using dedicated role
 That can operate only on main branch of this repo to avoid copying
 the AWS secrets to GitHub repo or settings.
+
+### Automated Pull requests
+
+In addition to pushing the assets to S3, one of GitHub Action will create
+Pull request with generated PDFs
 
 ### Credits and gratitude
 
