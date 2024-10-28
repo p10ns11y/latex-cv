@@ -17,6 +17,7 @@ use tokio::io::AsyncReadExt;
 use thiserror::Error;
 
 static BUCKET_NAME: &str = "peramsathyam";
+static FOLDER_NAME: &str = "cvs";
 
 #[derive(Error, Debug)]
 enum UploadError {
@@ -54,7 +55,8 @@ async fn upload_to_aws_s3() -> Result<(), UploadError> {
                 .put_object()
                 .bucket(BUCKET_NAME)
                 .key(format!(
-                    "cvs/{}",
+                    "{}/{}",
+                    FOLDER_NAME,
                     path.file_name().unwrap().to_str().unwrap()
                 ))
                 .body(byte_stream)
@@ -134,11 +136,11 @@ async fn set_bucket_policy(client: &Client) -> Result<(), UploadError> {
                     "Effect": "Allow",
                     "Principal": "*",
                     "Action": "s3:GetObject",
-                    "Resource": "arn:aws:s3:::{}/*"
+                    "Resource": "arn:aws:s3:::{}/{}/*"
                 }}
             ]
         }}"#,
-            BUCKET_NAME
+            BUCKET_NAME, FOLDER_NAME
         ))
         .send()
         .await
