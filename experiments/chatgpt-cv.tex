@@ -1,0 +1,99 @@
+\documentclass[13pt,a4paper,sans,colorlinks,urlcolor=violet,hyperindex,plainpages=false,bookmarksopen,bookmarksnumbered,pdfusetitle]{moderncv}
+
+% ModernCV themes
+\moderncvstyle{casual}
+\moderncvcolor{black}
+
+% Adjust the page margins and packages
+\usepackage[utf8]{inputenc}
+\usepackage[scale=0.87]{geometry}
+\usepackage{amsmath, xcolor, paracol}
+
+% Define sidebar color
+\definecolor{sidebarcolor}{gray}{0.9}
+
+% Personal data
+% \title{Curriculum Vitae}
+% \name{Peramanthan}{Sathyamoorthy}
+% \address{Stockholm, Sweden}
+% \phone[mobile]{+46~737~641~917}
+% \email{sathyam.peram@gmail.com}
+
+\setlength{\footskip}{50pt}
+\setlength{\hintscolumnwidth}{3.5cm}
+
+\begin{document}
+
+\hypersetup{urlcolor=violet}
+
+% Make the title (outside of paracol to keep it centered)
+% \makecvtitle
+\vspace{-1em}
+
+% Start two-column layout for sidebar and main content across all pages
+\columnratio{0.3,0.7} % Set sidebar to 30% and main content to 70%
+
+\begin{paracol}{2}
+
+% Sidebar Content - Static across all pages
+\switchcolumn[0] % Switch to the sidebar (left column)
+\colorbox{sidebarcolor}{%
+  \parbox[t][\textheight][t]{\linewidth}{ % Full-height colored sidebar
+    \vspace{1em} % Adjust padding as needed
+    \textbf{Contact Information} \\[0.5em]
+    Email: sathyam.peram@gmail.com \\[0.5em]
+    Phone: +46 737 641 917 \\[0.5em]
+    Address: Stockholm, Sweden \\[1em]
+
+    \textbf{Skills} \\[0.5em]
+    Python, Java, C++, HTML, CSS, JavaScript \\[0.5em]
+    Git, Docker, AWS, SQL \\[1em]
+
+    \textbf{Languages} \\[0.5em]
+    English (Fluent), Swedish (Conversational)
+  }
+}
+
+% Main Content - Start on the first page
+\switchcolumn % Switch to main content (right column)
+\section{Summary}
+Experienced Senior Software Engineer with over 9 years in scalable web applications, leadership in development, and a background in both Computer Science and Operations Research.
+
+\vspace{1em}
+
+\section{Recent Relevant Recorded Experiences}
+\subsection{Oneflow AB}
+Senior Software Engineer (Jan 2023 - Present) \\
+* Led integration of TypeScript, reducing errors by 70%. \\
+* Automated conversion of JavaScript to TypeScript, saving 200+ hours. \\
+* Enhanced scalability by centralizing Access Control Lists (ACL).
+
+\vspace{0.5em}
+
+\subsection{Weavler AB}
+Full Stack Developer (Apr 2017 - Feb 2019) \\
+* Managed AWS infrastructure, reducing costs by 40%. \\
+* Developed intelligent chatbots for onboarding and FAQs.
+
+% Continue with other sections in main content as necessary
+\section{Internships}
+Software Engineer Intern, Bumbee Labs (Jul 2015 - Sep 2015)
+
+\section{Top Software Engineering Skills at \textbf{Work}}
+* Agile, TDD, BDD, CI/CD
+
+\section{Recent Certifications and Courses}
+Terraform, LangChain.js, AWS Bedrock
+
+\section{Open Source Contributions}
+Contributed to Babel and FormatJS projects
+
+\section{Publications}
+Published in IEEE and Wiley on IoT and Energy Efficiency topics
+
+\section{Education}
+Master of Science in Computer Science, Uppsala University
+
+\end{paracol}
+
+\end{document}
