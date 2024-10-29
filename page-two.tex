@@ -13,7 +13,7 @@
 \colorbox{cvblue!90}
 {\color{white}  %% LEFT BOX
   \kern0.09\textwidth\relax % Left margin provided explicitly
-  \begin{minipage}[t][293mm][t]{0.82\textwidth}
+  \begin{minipage}[t][\textheight][t]{0.82\textwidth}
   \raggedright
   \vspace*{2.5ex}
 
@@ -48,6 +48,7 @@
   \noindent
   \textbf{References available upon request}
 
+  \vfill
   \end{minipage}
   \kern0.09\textwidth\relax%%Right margin provided explicitly to stretch the colourbox
 }
@@ -56,6 +57,7 @@
 % Right column
 \hskip2.5em% Left margin for the white area
 \begin{minipage}[t]{0.61\textwidth}
+\raggedright
 \setlength{\parskip}{1ex}% Adds spaces between paragraphs; use \\ to add new lines without this space. Shrink this amount to fit more data vertically
 
 \vspace{1ex}
@@ -139,5 +141,6 @@
 % back end
 % automated tests
 % }
+\vfill
 
 \end{minipage}
