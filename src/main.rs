@@ -170,7 +170,7 @@ async fn main() -> Result<(), UploadError> {
     println!("Generating PDFs...");
     let output = Command::new("sh")
         .arg("-c")
-        .arg("find . -maxdepth 1 -name 'cv*.tex' -exec pdflatex {} \\;")
+        .arg("find . -maxdepth 1 \\( -name 'cv*.tex' -o -name 'cl*.tex' \\) -exec pdflatex {} \\;")
         .output()
         .expect("failed to execute process");
 
@@ -180,7 +180,7 @@ async fn main() -> Result<(), UploadError> {
 
     let output = Command::new("sh")
         .arg("-c")
-        .arg("mkdir -p pdfs && mv cv*.pdf pdfs")
+        .arg("mkdir -p pdfs && mv cv*.pdf cl*.pdf pdfs")
         .output()
         .expect("failed to execute process");
 

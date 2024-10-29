@@ -4,7 +4,7 @@ fn main() {
     println!("Generating PDFs...");
     let output = Command::new("sh")
         .arg("-c")
-        .arg("find . -maxdepth 1 -name 'cv*.tex' -exec pdflatex {} \\;")
+        .arg("find . -maxdepth 1 \\( -name 'cv*.tex' -o -name 'cl*.tex' \\) -exec pdflatex {} \\;")
         .output()
         .expect("failed to execute process");
 
@@ -15,7 +15,7 @@ fn main() {
     // fix: move the pdf to a folder called 'pdfs' and create the output folder if it does not exist
     let output = Command::new("sh")
         .arg("-c")
-        .arg("mkdir -p localpdfs && mv cv*.pdf localpdfs/")
+        .arg("mkdir -p localpdfs && mv cv*.pdf cl*.pdf localpdfs/")
         .output()
         .expect("failed to execute process");
 

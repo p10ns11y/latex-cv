@@ -22,6 +22,16 @@ Run
 pdflatex <.tex filename>
 ```
 
+If you want to bulk generate all the tex files starts with `cv` or `cl`
+
+Run simply (already compiled and executable on Mac)
+
+```
+➜ ./generate-pdf
+```
+
+Otherwise compile it with `rustc generate-pdf.rs` then run `./generate-pdf `
+
 ### Auto generating PDFs using vscode plugin update the following setting in IDE
 
 Refer the [settings](vscode/settings.json)
