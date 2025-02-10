@@ -180,7 +180,7 @@ async fn main() -> Result<(), UploadError> {
 
     let output = Command::new("sh")
         .arg("-c")
-        .arg("mkdir -p pdfs && mv cv*.pdf cl*.pdf pdfs")
+        .arg("mkdir -p pdfs && mv cv*.pdf pdfs")
         .output()
         .expect("failed to execute process");
 
