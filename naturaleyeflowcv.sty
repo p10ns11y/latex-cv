@@ -1,0 +1,402 @@
+%========================================================================================
+% PARAMETERS
+%========================================================================================
+
+%----------------------------------------------------------------------------------------
+% CV SCALE
+%----------------------------------------------------------------------------------------
+\newcommand\cvscale{1}
+
+%----------------------------------------------------------------------------------------
+% FONT
+%----------------------------------------------------------------------------------------
+\newcommand\cvfont{ppl}
+\newcommand\cvheadertitlefontscale{2}
+\newcommand\cvheadersubtitlefontscale{1.2}
+\newcommand\cvsectionfontscale{1.5}
+\newcommand\cvnamefontscale{1.02}
+\newcommand\cvdescriptionfontscale{0.9}
+
+%----------------------------------------------------------------------------------------
+% MARGIN
+%----------------------------------------------------------------------------------------
+\newcommand\cvheadermargin{5}
+\newcommand\cvtopmargin{10}
+\newcommand\cvbottommargin{10}
+\newcommand\cvleftmargin{32}
+\newcommand\cvrightmargin{15}
+
+%----------------------------------------------------------------------------------------
+% HEADER
+%----------------------------------------------------------------------------------------
+\newcommand\cvavatarradius{20}
+\newcommand\cvavatarborderwidth{1}
+\newcommand\cvheaderoffset{5}
+
+%----------------------------------------------------------------------------------------
+% TIMELINE
+%----------------------------------------------------------------------------------------
+\newcommand\cvtimelineoffset{25}
+\newcommand\cvtimelinewidth{0.5}
+
+%----------------------------------------------------------------------------------------
+% MAIN
+%----------------------------------------------------------------------------------------
+\newcommand\cvmainspace{3}
+\newcommand\cvmainbubbleradius{6}
+\newcommand\cvmainbubbleborderwidth{1}
+
+%----------------------------------------------------------------------------------------
+% EVENT
+%----------------------------------------------------------------------------------------
+\newcommand\cveventdatewidth{16}
+\newcommand\cveventbubbleradius{3}
+\newcommand\cveventbubbleborderwidth{1}
+
+%----------------------------------------------------------------------------------------
+% SIDEBAR
+%----------------------------------------------------------------------------------------
+\newcommand\cvsidebarspace{1}
+\newcommand\cvsidebarbubbleradius{6}
+\newcommand\cvsidebarbubbleborderwidth{1}
+\newcommand\cvsidebaroffset{0.25}
+
+%----------------------------------------------------------------------------------------
+% COLUMN
+%----------------------------------------------------------------------------------------
+\newcommand\cvcolumnratio{0.7}
+\newcommand\cvspacebetweencolumns{9}
+
+%----------------------------------------------------------------------------------------
+% SEPARATOR
+%----------------------------------------------------------------------------------------
+\newcommand\cvseparatorscale{1}
+
+%----------------------------------------------------------------------------------------
+% COLORS
+%----------------------------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{cvcolor}{RGB}{20, 20, 20}                      % main color
+\definecolor{cvbordercolor}{RGB}{255, 255, 255}             % border color
+\definecolor{cvavatarbordercolor}{RGB}{255, 255, 255}       % avatar border color
+\definecolor{cvtimelinecolor}{RGB}{0, 0, 0}                 % timeline color
+\definecolor{cvlightcolor}{RGB}{245, 245, 245}              % light color
+
+%========================================================================================
+% CONFIGURATION
+%========================================================================================
+\usepackage{microtype}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+
+%----------------------------------------------------------------------------------------
+% RESCALE
+%----------------------------------------------------------------------------------------
+\usepackage{fp} 
+\FPeval{\cvavatarradius}{\cvscale*\cvavatarradius}  
+\FPeval{\cvavatarborderwidth}{\cvscale*\cvavatarborderwidth}
+\FPeval{\cvmainspace}{\cvscale*\cvmainspace}
+\FPeval{\cvmainbubbleradius}{\cvscale*\cvmainbubbleradius}
+\FPeval{\cvmainbubbleborderwidth}{\cvscale*\cvmainbubbleborderwidth}
+\FPeval{\cveventdatewidth}{\cvscale*\cveventdatewidth}
+\FPeval{\cveventbubbleradius}{\cvscale*\cveventbubbleradius}
+\FPeval{\cveventbubbleborderwidth}{\cvscale*\cveventbubbleborderwidth}
+\FPeval{\cvsidebarspace}{\cvscale*\cvsidebarspace}
+\FPeval{\cvsidebarbubbleradius}{\cvscale*\cvsidebarbubbleradius}
+\FPeval{\cvsidebarbubbleborderwidth}{\cvscale*\cvsidebarbubbleborderwidth}
+\FPeval{\cvseparatorscale}{\cvscale*\cvseparatorscale}
+
+%----------------------------------------------------------------------------------------
+% SETTINGS
+%----------------------------------------------------------------------------------------
+\newcommand\packagename{bubblecv}
+
+\usepackage[a4paper]{geometry}
+\geometry{top=\cvtopmargin mm, bottom=\cvbottommargin mm, left=\cvleftmargin mm, right=\cvrightmargin mm}
+
+\setlength{\topskip}{0mm}                                   % no top margin default
+\setlength{\parindent}{0mm}                                 % no indent default
+\pagenumbering{gobble}                                      % disable page numbering
+
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, nolistsep, leftmargin=*}       % default list style
+
+%----------------------------------------------------------------------------------------
+% COMMON PACKAGES
+%----------------------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}  % for utf-8 encoding
+\usepackage{xparse}          % new document command
+\usepackage{ifthen}          % if then else
+\usepackage{tabularx}        % tabular for progress bar
+\usepackage{hyperref}        % hyper ref
+
+%----------------------------------------------------------------------------------------
+% COLUMNS
+%----------------------------------------------------------------------------------------
+\usepackage{paracol}
+\setlength{\columnsep}{\cvspacebetweencolumns mm}       % space between columns
+\newcommand\iscvsidebar{0}                              % flag if sidebar is active
+
+%----------------------------------------------------------------------------------------
+% FONTS & ICONS
+%----------------------------------------------------------------------------------------
+\usepackage{relsize}        % for font scaling
+\usepackage{fontawesome}
+\usepackage{textcomp} % For additional symbols
+\DeclareUnicodeCharacter{E61B}{\symbol{"E61B}}
+% allow icons to scale
+\DeclareFontFamily{U}{fontawesomeOne}{}
+\DeclareFontShape{U}{fontawesomeOne}{m}{n}{<-> FontAwesome--fontawesomeone}{}
+\DeclareRobustCommand\FAone{\fontencoding{U}\fontfamily{fontawesomeOne}\selectfont}
+
+%----------------------------------------------------------------------------------------
+% TIMELINE
+%----------------------------------------------------------------------------------------
+\usepackage{silence}
+\WarningsOff[everypage]         % disable warning about problems with background package
+\usepackage{background}
+\SetBgScale{1}
+\SetBgAngle{0}
+\SetBgColor{cvtimelinecolor}
+\SetBgContents{\rule{\cvtimelinewidth mm}{\textheight}}
+% start offset from left edge of a4 paper instead of center
+\SetBgHshift{\dimexpr(\cvtimelineoffset mm - 105 mm)}
+\newcommand{\timelinespace}{\the\numexpr\cvleftmargin - \cvtimelineoffset\relax}
+
+%----------------------------------------------------------------------------------------
+% FOOTNOTE
+%----------------------------------------------------------------------------------------
+\setlength{\skip\footins}{0.25\baselineskip}
+
+%----------------------------------------------------------------------------------------
+% DRAW CIRCLE
+%----------------------------------------------------------------------------------------
+% Draw a circle with the image inside.
+% Parameter 1 (optional):   Path to image resource.
+% Parameter 2 (optional):   Image scale.
+% Parameter 3:              Circle radius in millimeters.
+% Parameter 4:              Circle border width in millimeters.
+% Parameter 5:              Circle background color in RGB.
+% Parameter 6:              Circle border color in RGB.
+\NewDocumentCommand{\drawcircle}{O{} O{1} m m m m}{%
+    \begin{tikzpicture}%
+        \draw[%
+            draw=#6, fill=#5, line width=#4mm,%
+            path picture={%
+                \ifthenelse{\equal{#1}{}}{}{%
+                    \node at (path picture bounding box.center){%
+                        \includegraphics[%
+                            width=#2\dimexpr#3mm\relax,%
+                            height=#2\dimexpr#3mm\relax]{#1}%
+                    };%
+                }%
+            }%
+        ] (0,0) circle (\dimexpr#3mm-#4mm/2\relax);%
+    \end{tikzpicture}%
+}%
+
+%========================================================================================
+% PUBLIC FUNCTIONS
+%========================================================================================
+
+%----------------------------------------------------------------------------------------
+% CV
+%----------------------------------------------------------------------------------------
+% Main CV function that prepares the entire layout.
+% Parameter 1 (optional):   Path to avatar resource.
+% Parameter 2 (optional):   Avatar scale.
+% Parameter 3:              Name.
+% Parameter 4:              Description.
+\NewDocumentEnvironment{cv}{O{} O{2} m m}{%
+    \relscale{\cvscale}%
+    \fontfamily{\cvfont}%
+    
+    \vspace*{\cvheadermargin mm}%
+    \vspace*{-\cvtopmargin mm}%
+    \hspace{-\timelinespace mm}%
+    \hspace{-\cvavatarradius mm}%
+    \begin{minipage}{\dimexpr(\cvavatarradius mm + \cvavatarradius mm)}%
+        \protect\ifthenelse{\equal{#1}{}}%
+            {\drawcircle{\cvavatarradius}{\cvavatarborderwidth}{cvcolor}{cvavatarbordercolor}}%
+            {\drawcircle[resources/#1][#2]{\cvavatarradius}{\cvavatarborderwidth}{cvcolor}{cvavatarbordercolor}}%
+    \end{minipage}%
+    \hspace{\cvheaderoffset mm}%
+    \begin{minipage}{\dimexpr(\linewidth + \timelinespace mm - \cvavatarradius mm - \cvheaderoffset mm)}%
+        \textscale{\cvheadertitlefontscale}{#3}%
+        \cvseparator[3]%
+        \textscale{\cvheadersubtitlefontscale}{#4}%
+    \end{minipage}%
+    
+    \columnratio{\cvcolumnratio}%
+    
+    \begin{paracol}{2}%
+}{%
+    \end{paracol}%
+}%
+
+%----------------------------------------------------------------------------------------
+% CV SECTION
+%----------------------------------------------------------------------------------------
+% Groups events, items and skills inside one block.
+% Parameter 1 (optional):   Path to icon resource.
+% Parameter 2 (optional):   Icon scale.
+% Parameter 3:              Section title.
+\NewDocumentCommand{\cvsection}{O{} O{1} m}{%
+    \ifthenelse{\equal{\iscvsidebar}{0}}{%
+        \vspace{\cvmainspace mm}%
+        \hspace{-\timelinespace mm}%
+        \hspace{-\cvmainbubbleradius mm}%
+        \begin{minipage}{\dimexpr(\cvmainbubbleradius mm + \cvmainbubbleradius mm)}%
+            \ifthenelse{\equal{#1}{}}%
+                {\protect\drawcircle{\cvmainbubbleradius}{\cvmainbubbleborderwidth}{cvcolor}{cvbordercolor}}%
+                {\protect\drawcircle[resources/#1][#2]{\cvmainbubbleradius}{\cvmainbubbleborderwidth}{cvcolor}{cvbordercolor}}%
+        \end{minipage}%
+        \hspace{\dimexpr(\timelinespace mm - \cvmainbubbleradius mm)}%
+        \begin{minipage}{\linewidth}%
+            \textscale{\cvsectionfontscale}{\textbf{#3}}%
+        \end{minipage}%
+        \cvseparator%
+    }{%
+        \vspace{\cvsidebarspace mm}%
+        \hspace{-\cvsidebarbubbleradius mm}%
+        \begin{minipage}{\dimexpr(\cvsidebarbubbleradius mm + \cvsidebarbubbleradius mm)}%
+            \protect\ifthenelse{\equal{#1}{}}%
+                {\drawcircle{\cvsidebarbubbleradius}{\cvsidebarbubbleborderwidth}{cvcolor}{cvbordercolor}}%
+                {\drawcircle[resources/#1][#2]{\cvsidebarbubbleradius}{\cvsidebarbubbleborderwidth}{cvcolor}{cvbordercolor}}%
+        \end{minipage}%
+        \hspace{\cvsidebaroffset mm}%
+        \begin{minipage}{\dimexpr(\linewidth - \cvsidebarbubbleradius mm - \cvsidebaroffset mm)}%
+            \textscale{\cvsectionfontscale}{\textbf{#3}}%
+        \end{minipage}%
+        \cvseparator%
+    }%
+}%
+
+%----------------------------------------------------------------------------------------
+% CV EVENT
+%----------------------------------------------------------------------------------------
+% Contains information about the event.
+% Parameter 1 (optional):   Start date of the event.
+% Parameter 2 (optional):   End date of the event.
+% Parameter 3:              Content.
+\NewDocumentEnvironment{cvevent}{O{} O{} +b}{%
+    \ifthenelse{\equal{\iscvsidebar}{0}}{%
+        \hspace{-\cveventbubbleradius mm}%
+        \hspace{-\timelinespace mm}%
+        \hspace{-\cveventdatewidth mm}%
+        \begin{minipage}[t]{\cveventdatewidth mm}%
+            \begin{center}%
+                \ifthenelse{\equal{#2}{}}{%
+                    \ifthenelse{\equal{#1}{}}{}{%
+                        \textbf{#1}\par%
+                    }%
+                }{%
+                    \textbf{#2}\par%
+                    \textbf{$\uparrow$}\par%
+                    \textbf{#1}%
+                }%
+            \end{center}%
+        \end{minipage}%
+        \begin{minipage}{\dimexpr(\cveventbubbleradius mm + \cveventbubbleradius mm)}%
+            \protect\drawcircle{\cveventbubbleradius}{\cveventbubbleborderwidth}{cvcolor}{cvbordercolor}%
+        \end{minipage}%
+        \hspace{\dimexpr(\timelinespace mm - \cveventbubbleradius mm)}%
+        \begin{minipage}[t]{\linewidth}%
+            #3%
+        \end{minipage}%
+        \par%
+    }{%
+        \PackageError{\packagename}{The cvevent can be used only in the main column}{}%
+    }%
+}{}%
+
+%----------------------------------------------------------------------------------------
+% CV SEPARATOR
+%----------------------------------------------------------------------------------------
+% Vertical space between paragraphs.
+% Parameter 1 (optional):   Space size in millimeters.
+\NewDocumentCommand{\cvseparator}{O{1}}{\vspace{#1\dimexpr\cvseparatorscale mm\relax}\par}
+
+%----------------------------------------------------------------------------------------
+% CV NAME
+%----------------------------------------------------------------------------------------
+% The title of the event header.
+% Parameter 1:              Event title.
+\newcommand{\cvname}[1]{\textscale{\cvnamefontscale}{\textbf{#1}}\cvseparator}
+
+%----------------------------------------------------------------------------------------
+% CV DESCRIPTION
+%----------------------------------------------------------------------------------------
+% The description of the event header.
+% Parameter 1:              Event description.
+\newcommand{\cvdescription}[1]{\textscale{\cvdescriptionfontscale}{\textit{\textbf{#1}}}\cvseparator[2]}
+
+%----------------------------------------------------------------------------------------
+% CV SIDEBAR
+%----------------------------------------------------------------------------------------
+% Switches the main column to the sidebar.
+\newcommand{\cvsidebar}[0]{%
+    \ifthenelse{\equal{\iscvsidebar}{0}}{%
+        \switchcolumn%
+        \renewcommand{\iscvsidebar}{1}%
+    }{%
+        \PackageError{\packagename}{The cvsidebar can be used only once}{}%
+    }%
+}%
+
+%----------------------------------------------------------------------------------------
+% CV ITEM
+%----------------------------------------------------------------------------------------
+% List item with a label.
+% Parameter 1 (optional):   Icon name from fontawesome package.
+% Parameter 2 (optional):   Icon size in milimeters.
+% Parameter 3:              Content.
+\NewDocumentEnvironment{cvitem}{O{Circle} O{2.5} +b}{%
+    \ifthenelse{\equal{\iscvsidebar}{1}}{%
+        \begin{minipage}{\cvscale\dimexpr#2mm\relax}%
+            \makebox(0, 0){\textcolor{cvcolor}{\fontsize{\cvscale\dimexpr#2mm\relax}{\cvscale\dimexpr#2mm\relax}\csname fa#1\endcsname}}%
+        \end{minipage}%
+        \hspace{\cvsidebaroffset mm}%
+        \begin{minipage}{\dimexpr(\linewidth - \cvsidebaroffset mm - \cvscale\dimexpr#2mm\relax)}%
+            #3%
+        \end{minipage}%
+        \par%
+    }{%
+        \PackageError{\packagename}{The cvitem can be used only in the sidebar column}{}%
+    }%
+}{}%
+
+%----------------------------------------------------------------------------------------
+% CV SKILL
+%----------------------------------------------------------------------------------------
+% Renders a progress-bar to indicate a certain skill in percent.
+% Parameter 1:              Name of skill.
+% Parameter 2:              Skill level.
+% Parameter 3:              Percent of the progress-bar in range [0, 1].
+\newcommand{\cvskill}[3]{%
+    \ifthenelse{\equal{\iscvsidebar}{1}}{%
+	\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}X}%
+ 		\textcolor{black}{\textbf{#1}} & \textcolor{cvcolor}{#2}%
+	\end{tabularx}%
+	
+	\begin{tikzpicture}[scale=1,rounded corners=\cvscale*0.5mm,very thin]%
+		\fill [cvlightcolor] (0,0) rectangle (\linewidth, 0.15*\cvscale);%
+		\fill [cvcolor] (0,0) rectangle (#3\linewidth, 0.15*\cvscale);%
+  	\end{tikzpicture}%
+	\cvseparator[2]%
+    }{%
+        \PackageError{\packagename}{The cvskill can be used only in the sidebar column}{}%
+    }%
+}%
+
+%----------------------------------------------------------------------------------------
+% CV FOOTNOTE
+%----------------------------------------------------------------------------------------
+% Footnote without order number and hyperlink.
+% Parameter 1:              Footnote content.
+\newcommand\cvfootnote[1]{%
+  \begingroup%
+  \renewcommand\thefootnote{}\NoHyper\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup%
+}%
