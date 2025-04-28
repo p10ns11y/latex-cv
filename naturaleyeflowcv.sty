@@ -92,8 +92,8 @@
 %----------------------------------------------------------------------------------------
 % RESCALE
 %----------------------------------------------------------------------------------------
-\usepackage{fp} 
-\FPeval{\cvavatarradius}{\cvscale*\cvavatarradius}  
+\usepackage{fp}
+\FPeval{\cvavatarradius}{\cvscale*\cvavatarradius}
 \FPeval{\cvavatarborderwidth}{\cvscale*\cvavatarborderwidth}
 \FPeval{\cvmainspace}{\cvscale*\cvmainspace}
 \FPeval{\cvmainbubbleradius}{\cvscale*\cvmainbubbleradius}
@@ -142,8 +142,6 @@
 %----------------------------------------------------------------------------------------
 \usepackage{relsize}        % for font scaling
 \usepackage{fontawesome}
-\usepackage{textcomp} % For additional symbols
-\DeclareUnicodeCharacter{E61B}{\symbol{"E61B}}
 % allow icons to scale
 \DeclareFontFamily{U}{fontawesomeOne}{}
 \DeclareFontShape{U}{fontawesomeOne}{m}{n}{<-> FontAwesome--fontawesomeone}{}
@@ -210,7 +208,7 @@
 \NewDocumentEnvironment{cv}{O{} O{2} m m}{%
     \relscale{\cvscale}%
     \fontfamily{\cvfont}%
-    
+
     \vspace*{\cvheadermargin mm}%
     \vspace*{-\cvtopmargin mm}%
     \hspace{-\timelinespace mm}%
@@ -226,9 +224,9 @@
         \cvseparator[3]%
         \textscale{\cvheadersubtitlefontscale}{#4}%
     \end{minipage}%
-    
+
     \columnratio{\cvcolumnratio}%
-    
+
     \begin{paracol}{2}%
 }{%
     \end{paracol}%
@@ -378,7 +376,7 @@
 	\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}X}%
  		\textcolor{black}{\textbf{#1}} & \textcolor{cvcolor}{#2}%
 	\end{tabularx}%
-	
+
 	\begin{tikzpicture}[scale=1,rounded corners=\cvscale*0.5mm,very thin]%
 		\fill [cvlightcolor] (0,0) rectangle (\linewidth, 0.15*\cvscale);%
 		\fill [cvcolor] (0,0) rectangle (#3\linewidth, 0.15*\cvscale);%
