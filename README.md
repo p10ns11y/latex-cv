@@ -4,8 +4,7 @@ CV build using latex
 
 ![CV using Latex](https://github.com/user-attachments/assets/4a7ffd55-5822-48d7-bdfc-a7f261f62cea)
 
-![image](https://github.com/user-attachments/assets/d53e5457-78e6-42f3-a8e2-139bbeb994b0) ![image](https://github.com/user-attachments/assets/e39862bd-c288-4ddd-83a3-de34084a14a0)
-
+![image](https://github.com/user-attachments/assets/d53e5457-78e6-42f3-a8e2-139bbeb994b0) ![image](https://github.com/user-attachments/assets/b410215a-6a2a-40e4-bd3e-1de7a4e0b833)
 
 ### Tools
 
